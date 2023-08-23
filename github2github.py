@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 # Copy GitHub Issues between repos/owners
@@ -13,8 +13,6 @@
 #    - save the generated token into the migration script
 #
 
-from __future__ import absolute_import
-from __future__ import print_function
 import json
 import getopt
 import os
@@ -41,14 +39,14 @@ dst_github_token = ""
 
 def usage():
     print("Copy GitHub Issues between repos/owners")
-    print("Usage: %s [-h] [-f]\n"
+    print(("Usage: %s [-h] [-f]\n"
           "\t[-O <src GitHub owner>] [-R <src repo>] [-T <src access token>]\n"
           "\t[-o <dst GitHub owner>] [-r <dst repo>] [-t <dst access token>]\n"
-          % os.path.basename(__file__))
+          % os.path.basename(__file__)))
     print("Example:")
-    print("\t%s -h" % os.path.basename(__file__))
-    print("\t%s -O src_login -R src_repo -T src_token \\\n"
-          "\t\t\t\t-o dst_login -r dst_repo -t dst_token" % os.path.basename(__file__))
+    print(("\t%s -h" % os.path.basename(__file__)))
+    print(("\t%s -O src_login -R src_repo -T src_token \\\n"
+          "\t\t\t\t-o dst_login -r dst_repo -t dst_token" % os.path.basename(__file__)))
     exit(1)
 
 
@@ -106,7 +104,7 @@ def dst_github_post(url, avs={}, fields=[]):
     # Copy fields into the data
     for field in fields:
         if field not in avs:
-            print("Error posting filed %s to %s" % (field, url))
+            print(("Error posting filed %s to %s" % (field, url)))
             exit(1)
         d[field] = avs[field]
 
@@ -137,11 +135,11 @@ def dst_github_issue_exist(number):
 def dst_github_issue_update(issue):
     id = issue["number"]
 
-    print("\tupdating issue #%d on GitHub..." % id)
+    print(("\tupdating issue #%d on GitHub..." % id))
     r = dst_github_post("issues/%d" % id, issue,
                         ["title", "body", "state", "labels", "assignees"])
     if not r:
-        print("Error updating issue #%d on GitHub:\n%s" % (id, r.headers))
+        print(("Error updating issue #%d on GitHub:\n%s" % (id, r.headers)))
         exit(1)
 
 
@@ -150,7 +148,7 @@ def dst_github_issue_append(issue):
     r = dst_github_post(
         "issues", issue, ["title", "body", "labels", "assignees"])
     if not r:
-        print("Error appending an issue on GitHub:\n%s" % r.headers)
+        print(("Error appending an issue on GitHub:\n%s" % r.headers))
         exit(1)
     return r
 
@@ -159,7 +157,7 @@ def github_issues_copy():
     id = 0
     while True:
         id += 1
-        print("Copying issue #%d..." % id)
+        print(("Copying issue #%d..." % id))
         issue = src_github_get("issues/%d" % id)
         if issue:
             issue = issue.json()
@@ -167,25 +165,25 @@ def github_issues_copy():
                 if force_update:
                     dst_github_issue_update(issue)
                 else:
-                    print("\tupdating issue #%d..." % id)
+                    print(("\tupdating issue #%d..." % id))
             else:
                 if force_update:
                     # Make sure the previous issue already exist
                     if id > 1 and not dst_github_issue_exist(id - 1):
-                        print("Error adding issue #%d: previous issue does not exists"
-                              % id)
+                        print(("Error adding issue #%d: previous issue does not exists"
+                              % id))
                         exit(1)
                     req = dst_github_issue_append(issue)
                     new_issue = dst_github_get(req.headers["location"]).json()
                     if new_issue["number"] != id:
-                        print("Error adding issue #%d: assigned unexpected issue id #%d"
-                              % (id, new_issue["number"]))
+                        print(("Error adding issue #%d: assigned unexpected issue id #%d"
+                              % (id, new_issue["number"])))
                         exit(1)
                     # Update issue state
                     if issue["state"] != "open":
                         dst_github_issue_update(issue)
                 else:
-                    print("\tadding new issue #%d..." % id)
+                    print(("\tadding new issue #%d..." % id))
         else:
             print("Done.")
             break
@@ -240,10 +238,10 @@ def main(argv):
     # Parse command line arguments
     args_parse(argv)
     print("===> Copying GitHub Issues between repos/owners...")
-    print("\tsource GitHub owner: %s" % src_github_owner)
-    print("\tsource GitHub repo:  %s" % src_github_repo)
-    print("\tdest.  GitHub owner: %s" % dst_github_owner)
-    print("\tdest.  GitHub repo:  %s" % dst_github_repo)
+    print(("\tsource GitHub owner: %s" % src_github_owner))
+    print(("\tsource GitHub repo:  %s" % src_github_repo))
+    print(("\tdest.  GitHub owner: %s" % dst_github_owner))
+    print(("\tdest.  GitHub repo:  %s" % dst_github_repo))
 
     github_issues_copy()
 
