@@ -81,7 +81,7 @@ QUICK START
  3. Dry-run the migration script and check all the warnings.
     **NOTE: Script dry-runs by default. No changes are posted to GitHub.**
 
-    $ bugzilla2github -x export.xml -o GITHUB_OWNER -r GITHUB_REPO -t token
+    `$ bugzilla2github.py -x export.xml -o GITHUB_OWNER -r GITHUB_REPO -t token`
 
 <pre>
     Where:
@@ -93,7 +93,7 @@ QUICK START
 
  4. Run the migration script again and force the updates adding `-f`:
 
-    $ bugzilla2github -x export.xml -o GITHUB_OWNER -r GITHUB_REPO -t token -f
+    `$ bugzilla2github.py -x export.xml -o GITHUB_OWNER -r GITHUB_REPO -t token -f`
 
 <pre>
     Where:
@@ -129,7 +129,7 @@ EXAMPLE
 =======
 Dry-run:
 
-    $ bugzilla2github -x export.xml -o berestovskyy -r bugzilla2github-demo -t TOKEN
+    $ bugzilla2github.py -x export.xml -o berestovskyy -r bugzilla2github-demo -t TOKEN
     ===> Converting Bugzilla Bugs to GitHub Issues...
         Source XML file:    export.xml
         Dest. GitHub owner: berestovskyy
@@ -179,7 +179,7 @@ Dry-run:
 
 Post changes to GitHub:
 
-    $ bugzilla2github -x export.xml -o berestovskyy -r bugzilla2github-demo -t TOKEN -f
+    $ bugzilla2github.py -x export.xml -o berestovskyy -r bugzilla2github-demo -t TOKEN -f
     WARNING: the repo will be UPDATED! No backups, no undos!
     Press Ctrl+C within next 5 seconds to cancel the update:
     ===> Converting Bugzilla Bugs to GitHub Issues...
